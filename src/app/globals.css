@@ -1,0 +1,238 @@
+@import "tailwindcss";
+
+/* Dark = the arcade look from the reference. Light = a brighter daytime take. */
+:root {
+  --bg-top: #d9d6ff;
+  --bg-mid: #b9c4ff;
+  --bg-bot: #8fd0ff;
+  --glow: rgba(255, 255, 255, 0.7);
+  --fg: #1b1650;
+  --muted: #5b5a95;
+  --card: rgba(255, 255, 255, 0.65);
+  --card-border: rgba(27, 22, 80, 0.25);
+  --title-stroke: #1b1650;
+  --panel: #2f5bff;
+  --cell: #1636a8;
+  --cell-hi: #2146c8;
+}
+
+:root[data-theme="dark"] {
+  --bg-top: #4a1d7a;
+  --bg-mid: #2a2a9a;
+  --bg-bot: #101e6e;
+  --glow: rgba(255, 90, 200, 0.28);
+  --fg: #ffffff;
+  --muted: #b8b4f0;
+  --card: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.35);
+  --title-stroke: #ffffff;
+  --panel: #1d4ed8;
+  --cell: #0b2a8a;
+  --cell-hi: #123aa8;
+}
+
+@theme inline {
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-card: var(--card);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+body {
+  min-height: 100vh;
+  color: var(--fg);
+  font-family: var(--font-body), system-ui, sans-serif;
+  background:
+    radial-gradient(60% 40% at 50% 28%, var(--glow), transparent 70%),
+    linear-gradient(180deg, var(--bg-top), var(--bg-mid) 55%, var(--bg-bot));
+  background-attachment: fixed;
+}
+
+/* Tailwind v4 resets buttons to the default cursor; restore the pointer. */
+button:not(:disabled) {
+  cursor: pointer;
+}
+
+/* Portfolio credit link, bottom-right */
+.credit {
+  color: var(--fg);
+  background: var(--card);
+  border: 1.5px solid var(--card-border);
+  backdrop-filter: blur(6px);
+  opacity: 0.85;
+  transition: transform 0.2s, opacity 0.2s, background 0.2s;
+}
+.credit:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.font-display {
+  font-family: var(--font-display), var(--font-body), system-ui, sans-serif;
+}
+
+/* ---- Logo letters: fat colour fill, outline, drop shadow ---- */
+.logo-letter {
+  font-family: var(--font-display), system-ui, sans-serif;
+  line-height: 0.88;
+  letter-spacing: 0.04em;
+  paint-order: stroke fill;
+  -webkit-text-stroke: 7px var(--title-stroke);
+  text-shadow: 0 5px 0 rgba(0, 0, 0, 0.35), 0 0 28px rgba(255, 200, 60, 0.35);
+}
+.l-yellow { color: #ffc61a; }
+.l-red { color: #e8264f; }
+
+/* ---- Glossy game buttons ---- */
+.gbtn {
+  position: relative;
+  font-family: var(--font-display), system-ui, sans-serif;
+  color: #fff;
+  letter-spacing: 0.03em;
+  border-radius: 18px;
+  border: 3px solid rgba(255, 255, 255, 0.85);
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+  transition: transform 0.12s, filter 0.2s, box-shadow 0.12s;
+}
+.gbtn::after {
+  /* glossy highlight */
+  content: "";
+  position: absolute;
+  inset: 3px 3px 55% 3px;
+  border-radius: 12px 12px 40px 40px;
+  background: linear-gradient(rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0));
+  pointer-events: none;
+}
+.gbtn-blue {
+  background: linear-gradient(#2f7bff, #1243d6);
+  box-shadow: 0 6px 0 #0a2a99, 0 12px 24px rgba(10, 30, 120, 0.45);
+}
+.gbtn-orange {
+  background: linear-gradient(#ff8a3d, #e04a0a);
+  box-shadow: 0 6px 0 #a02f00, 0 12px 24px rgba(160, 47, 0, 0.4);
+}
+.gbtn-green {
+  background: linear-gradient(#3fe07a, #12a64a);
+  box-shadow: 0 6px 0 #0a6e30, 0 12px 24px rgba(10, 110, 48, 0.4);
+}
+.gbtn-off {
+  background: linear-gradient(#8b8fb3, #5b5f86);
+  box-shadow: 0 6px 0 #3a3d5c, 0 12px 24px rgba(20, 20, 60, 0.35);
+}
+.gbtn-off:active { box-shadow: 0 2px 0 #3a3d5c; }
+.gbtn:hover { filter: brightness(1.1); transform: translateY(-2px); }
+.gbtn:active { transform: translateY(4px); }
+.gbtn-blue:active { box-shadow: 0 2px 0 #0a2a99; }
+.gbtn-orange:active { box-shadow: 0 2px 0 #a02f00; }
+.gbtn-green:active { box-shadow: 0 2px 0 #0a6e30; }
+
+/* ---- Board ---- */
+.board-panel {
+  background: var(--panel);
+  border: 3px solid #fff;
+  border-radius: 22px;
+  padding: 10px;
+  box-shadow: 0 0 0 4px rgba(120, 140, 255, 0.35), 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+.board-cell {
+  background: var(--cell);
+  border-radius: 16px;
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.35);
+  transition: background 0.2s, transform 0.12s;
+}
+.board-cell:enabled:hover { background: var(--cell-hi); transform: scale(1.04); }
+.board-cell:enabled:active { transform: scale(0.95); }
+
+.mark { filter: drop-shadow(0 4px 3px rgba(0, 0, 0, 0.4)); }
+
+/* ---- Player cards ---- */
+.pcard {
+  border-radius: 20px;
+  background: var(--card);
+  border: 2px solid transparent;
+  transition: transform 0.3s, border-color 0.3s, background 0.3s, opacity 0.3s;
+}
+.pcard-active {
+  border-color: var(--card-border);
+  border-color: #fff;
+  background: linear-gradient(rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08));
+  transform: translateY(-4px);
+  box-shadow: 0 0 24px rgba(255, 255, 255, 0.3);
+}
+:root:not([data-theme="dark"]) .pcard-active {
+  border-color: var(--title-stroke);
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 20px rgba(27, 22, 80, 0.2);
+}
+
+/* ---- Animations ---- */
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.draw {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: draw 0.4s ease-out forwards;
+}
+.draw-delay { animation-delay: 0.18s; }
+
+@keyframes pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  70% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+.pop { animation: pop 0.45s cubic-bezier(0.2, 1, 0.4, 1) both; }
+
+@keyframes rise {
+  from { transform: translateY(24px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.rise { animation: rise 0.55s ease-out both; }
+
+@keyframes logo-in {
+  0% { transform: translateY(-40px) scale(0.6); opacity: 0; }
+  60% { transform: translateY(6px) scale(1.06); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+.logo-in { animation: logo-in 0.7s cubic-bezier(0.2, 1, 0.4, 1) both; }
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg) scale(1.05); }
+  50% { transform: rotate(3deg) scale(1.1); }
+}
+.win-cell { animation: wiggle 0.5s ease-in-out infinite; }
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.bob { animation: bob 1s ease-in-out infinite; }
+
+@keyframes glow-pulse {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(255, 220, 80, 0)); }
+  50% { filter: drop-shadow(0 0 14px rgba(255, 220, 80, 0.9)); }
+}
+.glow { animation: glow-pulse 2s ease-in-out infinite; }
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.overlay { animation: fade-in 0.4s ease-out 0.9s both; }
+
+@keyframes confetti {
+  0% { transform: translateY(-10vh) rotate(0); opacity: 1; }
+  100% { transform: translateY(105vh) rotate(720deg); opacity: 1; }
+}
+.confetti {
+  position: fixed;
+  top: 0;
+  z-index: 60;
+  width: 10px;
+  height: 16px;
+  border-radius: 2px;
+  pointer-events: none;
+  animation: confetti linear forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draw, .pop, .rise, .logo-in, .win-cell, .bob, .glow, .overlay { animation: none; stroke-dashoffset: 0; }
+  .confetti { display: none; }
+}
